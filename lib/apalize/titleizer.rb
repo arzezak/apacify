@@ -13,17 +13,17 @@ module Apalize
     end
 
     def titleize
-      words.map.with_index do |word, index|
-        if whitespace_or_punctuation?(word)
-          word
+      tokens.map.with_index do |token, index|
+        if token.whitespace_or_punctuation?
+          token
         else
-          clean_word = clean_word_for_comparison(word)
-          previous_word = (index > 0) ? words[index - 1] : nil
+          clean_word = token.clean_word_for_comparison
+          previous_word = (index > 0) ? tokens[index - 1] : nil
 
-          if should_capitalize?(index, words.length, clean_word, previous_word)
-            capitalize_word_parts(word)
+          if should_capitalize?(index, tokens.length, clean_word, previous_word)
+            token.capitalize_word_parts
           else
-            word.downcase
+            token.downcase
           end
         end
       end.join("").strip
@@ -31,26 +31,12 @@ module Apalize
 
     private
 
+    def tokens
+      string.split(word_boundary_pattern).map(&Token.method(:new))
+    end
+
     def word_boundary_pattern
       /(\s+|[.!?:—()]+\s*)/
-    end
-
-    def words
-      string.split(word_boundary_pattern)
-    end
-
-    # More
-
-    def whitespace_or_punctuation?(word)
-      word.match?(/\s+|[.!?:—()]+\s*/)
-    end
-
-    def sentence_ending_punctuation?(word)
-      word.match?(/[.!?:—()]+\s*/)
-    end
-
-    def clean_word_for_comparison(word)
-      word.downcase.gsub(/[^\w']/, "")
     end
 
     def should_capitalize?(index, total_words, clean_word, previous_word)
@@ -62,7 +48,7 @@ module Apalize
     end
 
     def follows_sentence_ending_punctuation?(previous_word)
-      previous_word && sentence_ending_punctuation?(previous_word)
+      previous_word&.sentence_ending_punctuation?
     end
 
     def first_word?(index)
@@ -79,10 +65,6 @@ module Apalize
 
     def minor_word?(clean_word)
       MINOR_WORDS.include?(clean_word)
-    end
-
-    def capitalize_word_parts(word)
-      word.gsub(/(^|-)(\w)/) { |match| $1 + $2.upcase }
     end
   end
 end
