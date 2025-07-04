@@ -4,13 +4,14 @@ module Apalize
   class Token
     extend Forwardable
 
-    attr_reader :string
-
-    def initialize(string)
-      @string = string
-    end
+    attr_reader :string, :index
 
     def_delegator :string, :downcase
+
+    def initialize(string, index)
+      @string = string
+      @index = index
+    end
 
     def capitalize_word_parts
       string.gsub(/(^|-)(\w)/) { |match| $1 + $2.upcase }

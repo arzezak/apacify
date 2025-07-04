@@ -13,14 +13,13 @@ module Apalize
     end
 
     def titleize
-      tokens.map.with_index do |token, index|
+      tokens.map do |token|
         if token.whitespace_or_punctuation?
           token
         else
-          clean_word = token.clean_word_for_comparison
-          previous_word = (index > 0) ? tokens[index - 1] : nil
+          previous_word = (token.index > 0) ? tokens[token.index - 1] : nil
 
-          if should_capitalize?(index, tokens.length, clean_word, previous_word)
+          if should_capitalize?(token, tokens, previous_word)
             token.capitalize_word_parts
           else
             token.downcase
@@ -32,18 +31,14 @@ module Apalize
     private
 
     def tokens
-      string.split(word_boundary_pattern).map(&Token.method(:new))
+      Tokenizer.new(string)
     end
 
-    def word_boundary_pattern
-      /(\s+|[.!?:—()]+\s*)/
-    end
-
-    def should_capitalize?(index, total_words, clean_word, previous_word)
-      first_word?(index) ||
-        last_word?(index, total_words) ||
-        long_word?(clean_word) ||
-        !minor_word?(clean_word) ||
+    def should_capitalize?(token, tokens, previous_word)
+      first_word?(token.index) ||
+        last_word?(token.index, tokens.count) ||
+        long_word?(token.clean_word_for_comparison) ||
+        !minor_word?(token.clean_word_for_comparison) ||
         follows_sentence_ending_punctuation?(previous_word)
     end
 

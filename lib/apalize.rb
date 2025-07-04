@@ -1,6 +1,7 @@
 require_relative "apalize/error"
 require_relative "apalize/titleizer"
 require_relative "apalize/token"
+require_relative "apalize/tokenizer"
 require_relative "apalize/version"
 
 module Apalize
