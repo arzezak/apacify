@@ -26,7 +26,7 @@ module Apalize
             token.downcase
           end
         end
-      end.join("").strip
+      end.join.strip
     end
 
     private
