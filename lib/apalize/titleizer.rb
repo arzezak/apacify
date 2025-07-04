@@ -13,27 +13,20 @@ module Apalize
     end
 
     def titleize
-      result = []
-      capitalize_next = true
-
-      words.each_with_index do |word, index|
+      words.map.with_index do |word, index|
         if whitespace_or_punctuation?(word)
-          result << word
-          capitalize_next = true if sentence_ending_punctuation?(word)
+          word
         else
           clean_word = clean_word_for_comparison(word)
+          previous_word = (index > 0) ? words[index - 1] : nil
 
-          result << if should_capitalize?(capitalize_next, index, words.length, clean_word)
+          if should_capitalize?(index, words.length, clean_word, previous_word)
             capitalize_word_parts(word)
           else
             word.downcase
           end
-
-          capitalize_next = false
         end
-      end
-
-      result.join("").strip
+      end.join("").strip
     end
 
     private
@@ -60,12 +53,16 @@ module Apalize
       word.downcase.gsub(/[^\w']/, "")
     end
 
-    def should_capitalize?(capitalize_next, index, total_words, clean_word)
-      capitalize_next ||
-        first_word?(index) ||
+    def should_capitalize?(index, total_words, clean_word, previous_word)
+      first_word?(index) ||
         last_word?(index, total_words) ||
         long_word?(clean_word) ||
-        !minor_word?(clean_word)
+        !minor_word?(clean_word) ||
+        follows_sentence_ending_punctuation?(previous_word)
+    end
+
+    def follows_sentence_ending_punctuation?(previous_word)
+      previous_word && sentence_ending_punctuation?(previous_word)
     end
 
     def first_word?(index)
