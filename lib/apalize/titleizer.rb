@@ -2,10 +2,6 @@ require "yaml"
 
 module Apalize
   class Titleizer
-    MINOR_WORDS = YAML.safe_load_file(
-      File.join(__dir__, "..", "..", "config", "words.yml")
-    ).fetch("minor").freeze
-
     attr_reader :string
 
     def initialize(string)
@@ -35,31 +31,15 @@ module Apalize
     end
 
     def should_capitalize?(token, tokens, previous_word)
-      first_word?(token.index) ||
-        last_word?(token.index, tokens.count) ||
-        long_word?(token.clean_word_for_comparison) ||
-        !minor_word?(token.clean_word_for_comparison) ||
+      tokens.first?(token) ||
+        tokens.last?(token) ||
+        token.long? ||
+        !token.minor_word? ||
         follows_sentence_ending_punctuation?(previous_word)
     end
 
     def follows_sentence_ending_punctuation?(previous_word)
       previous_word&.sentence_ending_punctuation?
-    end
-
-    def first_word?(index)
-      index == 0
-    end
-
-    def last_word?(index, total_words)
-      index == total_words - 1
-    end
-
-    def long_word?(clean_word)
-      clean_word.length >= 4
-    end
-
-    def minor_word?(clean_word)
-      MINOR_WORDS.include?(clean_word)
     end
   end
 end

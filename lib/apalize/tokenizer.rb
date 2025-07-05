@@ -20,6 +20,14 @@ module Apalize
       tokens.each(&block)
     end
 
+    def first?(token)
+      token.index == 0
+    end
+
+    def last?(token)
+      token.index == tokens.size - 1
+    end
+
     private
 
     def word_boundary_pattern

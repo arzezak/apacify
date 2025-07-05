@@ -17,8 +17,16 @@ module Apalize
       string.gsub(/(^|-)(\w)/) { |match| $1 + $2.upcase }
     end
 
-    def clean_word_for_comparison
+    def letters
       string.downcase.gsub(/[^\w']/, "")
+    end
+
+    def long?
+      letters.length >= 4
+    end
+
+    def minor_word?
+      MINOR_WORDS.include?(letters)
     end
 
     def sentence_ending_punctuation?
