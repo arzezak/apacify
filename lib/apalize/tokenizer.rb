@@ -28,6 +28,10 @@ module Apalize
       token.index == tokens.size - 1
     end
 
+    def previous(token)
+      tokens[token.index - 1]
+    end
+
     private
 
     def word_boundary_pattern

@@ -12,14 +12,10 @@ module Apalize
       tokens.map do |token|
         if token.whitespace_or_punctuation?
           token
+        elsif should_capitalize?(token, tokens)
+          token.capitalize_word_parts
         else
-          previous_word = (token.index > 0) ? tokens[token.index - 1] : nil
-
-          if should_capitalize?(token, tokens, previous_word)
-            token.capitalize_word_parts
-          else
-            token.downcase
-          end
+          token.downcase
         end
       end.join.strip
     end
@@ -30,16 +26,8 @@ module Apalize
       Tokenizer.new(string)
     end
 
-    def should_capitalize?(token, tokens, previous_word)
-      tokens.first?(token) ||
-        tokens.last?(token) ||
-        token.long? ||
-        !token.minor_word? ||
-        follows_sentence_ending_punctuation?(previous_word)
-    end
-
-    def follows_sentence_ending_punctuation?(previous_word)
-      previous_word&.sentence_ending_punctuation?
+    def should_capitalize?(token, tokens)
+      tokens.first?(token) || tokens.last?(token) || token.long? || !token.minor_word? || tokens.previous(token).sentence_ending_punctuation?
     end
   end
 end
