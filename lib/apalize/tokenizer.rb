@@ -14,8 +14,10 @@ module Apalize
       tokens[index]
     end
 
-    def each
-      tokens.each { |token| yield(token) }
+    def each(&block)
+      return enum_for(:each) unless block_given?
+
+      tokens.each(&block)
     end
 
     private
