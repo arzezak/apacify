@@ -8,9 +8,7 @@ module Apalize
       @tokens = string
         .split(word_boundary_pattern)
         .map
-        .with_index do |token, index|
-          Token.new(token, index)
-        end
+        .with_index(&instantiate)
     end
 
     def [](index)
@@ -28,6 +26,10 @@ module Apalize
     end
 
     private
+
+    def instantiate
+      ->(token, index) { Token.new(token, index) }
+    end
 
     def word_boundary_pattern
       /(\s+|[.!?:—()]+\s*)/
