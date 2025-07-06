@@ -6,8 +6,8 @@ require_relative "apalize/version"
 
 module Apalize
   MINOR_WORDS = YAML.safe_load_file(
-    File.join(__dir__, "..", "config", "words.yml")
-  ).fetch("minor").freeze
+    File.join(__dir__, "..", "config", "minor.yml")
+  ).freeze
 
   def self.titleize(string)
     Titleizer.new(string).titleize

@@ -4,10 +4,13 @@ module Apalize
 
     attr_reader :tokens
 
-    def initialize(text)
-      @tokens = text.split(word_boundary_pattern).map.with_index do |token, index|
-        Token.new(token, index)
-      end
+    def initialize(string)
+      @tokens = string
+        .split(word_boundary_pattern)
+        .map
+        .with_index do |token, index|
+          Token.new(token, index)
+        end
     end
 
     def [](index)
@@ -18,14 +21,6 @@ module Apalize
       return enum_for(:each) unless block_given?
 
       tokens.each(&block)
-    end
-
-    def first?(token)
-      token.index == 0
-    end
-
-    def last?(token)
-      token.index == tokens.size - 1
     end
 
     def previous(token)

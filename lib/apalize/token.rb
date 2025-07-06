@@ -17,6 +17,10 @@ module Apalize
       string.gsub(/(^|-)(\w)/) { |match| $1 + $2.upcase }
     end
 
+    def first?
+      index == 0
+    end
+
     def letters
       string.downcase.gsub(/[^\w']/, "")
     end
