@@ -1,8 +1,8 @@
-require_relative "lib/apalize/version"
+require_relative "lib/apacify/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "apalize"
-  spec.version = Apalize::VERSION
+  spec.name = "apacify"
+  spec.version = Apacify::VERSION
   spec.authors = ["Ariel Rzezak"]
   spec.email = ["arzezak@gmail.com"]
 

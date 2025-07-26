@@ -1,4 +1,4 @@
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 
-require "apalize"
+require "apacify"
 require "minitest/autorun"

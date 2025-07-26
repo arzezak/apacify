@@ -1,4 +1,4 @@
-module Apalize
+module Apacify
   class Error < StandardError
   end
 end

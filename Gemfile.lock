@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    apalize (0.1.0)
+    apacify (0.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -79,7 +79,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  apalize!
+  apacify!
   irb
   minitest (~> 5.16)
   rake (~> 13.0)

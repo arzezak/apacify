@@ -1,4 +1,4 @@
-module Apalize
+module Apacify
   class Tokenizer
     include Enumerable
 

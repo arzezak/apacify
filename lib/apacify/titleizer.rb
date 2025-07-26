@@ -1,6 +1,6 @@
 require "yaml"
 
-module Apalize
+module Apacify
   class Titleizer
     attr_reader :tokens
 

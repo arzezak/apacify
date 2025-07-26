@@ -1,6 +1,6 @@
 require "forwardable"
 
-module Apalize
+module Apacify
   class Token
     extend Forwardable
 
