@@ -204,4 +204,12 @@ class TestApacify < Minitest::Test
   def test_wont_ignore_not_sensitive_matches
     assert_equal "Tokyo Night (Feat. Evangeline)", "tokyo night (FEAT. evangeline)".apacify(ignore: ["feat."])
   end
+
+  def test_roman_numerals
+    assert_equal "Chapter IV: The Return", "chapter iv: the return".apacify
+    assert_equal "World War II", "world war ii".apacify
+    assert_equal "Henry VIII", "henry viii".apacify
+    assert_equal "Louis XIV", "louis xiv".apacify
+    assert_equal "Super Bowl LIII", "super bowl liii".apacify
+  end
 end

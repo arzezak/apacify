@@ -14,7 +14,15 @@ module Apacify
     end
 
     def capitalize_word_parts
-      string.downcase.gsub(/(^|-)(\w)/) { |match| $1 + $2.upcase }
+      string.downcase.gsub(/(^|-)(\w+)/) do |match|
+        prefix = $1
+        word = $2
+        if roman_numeral?(word)
+          prefix + word.upcase
+        else
+          prefix + word.capitalize
+        end
+      end
     end
 
     def first?
@@ -47,6 +55,17 @@ module Apacify
 
     def whitespace_or_punctuation?
       string.match?(/\s+|[.!?:—()]+\s*/)
+    end
+
+    private
+
+    def roman_numeral?(word)
+      # Only letters used in roman numerals
+      return false unless word.match?(/\A[ivxlcdm]+\z/)
+
+      # Roman numeral pattern - matches valid combinations
+      # This pattern handles: 1-3999 (I-MMMCMXCIX)
+      word.match?(/\A(?=[mdclxvi])m{0,4}(cm|cd|d?c{0,3})?(xc|xl|l?x{0,3})?(ix|iv|v?i{0,3})?\z/)
     end
   end
 end
