@@ -56,7 +56,21 @@ Hyphenated words are handled properly:
 # => "Mother-In-Law"
 ```
 
-### Features
+You can specify words to ignore during title case conversion. Ignored words will preserve their original case and bypass all capitalization rules:
+
+```ruby
+"tokyo night (feat. evangeline)".apacify(ignore: "feat.")
+# => "Tokyo Night (feat. Evangeline)"
+
+"the quick brown fox".apacify(ignore: ["quick", "fox"])
+# => "The quick Brown fox"
+
+# Case-sensitive matching: "FEAT." != "feat."
+"tokyo night (FEAT. evangeline)".apacify(ignore: "feat.")
+# => "Tokyo Night (Feat. Evangeline)"  # FEAT. not ignored, gets capitalized
+```
+
+## Features
 
 - Follows APA style title case rules
 - Capitalizes first and last words regardless of length
@@ -65,6 +79,7 @@ Hyphenated words are handled properly:
 - Handles hyphenated words correctly
 - Preserves original spacing and punctuation
 - Words 4 letters or longer are always capitalized
+- Ignore specific words from capitalization rules
 
 ## Comparison with Rails' `#titleize`
 

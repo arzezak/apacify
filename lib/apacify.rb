@@ -9,13 +9,13 @@ module Apacify
     File.join(__dir__, "..", "config", "minor.yml")
   ).freeze
 
-  def self.titleize(string)
-    Titleizer.new(string).titleize
+  def self.titleize(string, ignore: [])
+    Titleizer.new(string, ignore:).titleize
   end
 end
 
 class String
-  def apacify
-    Apacify.titleize(self)
+  def apacify(ignore: [])
+    Apacify.titleize(self, ignore:)
   end
 end

@@ -14,11 +14,15 @@ module Apacify
     end
 
     def capitalize_word_parts
-      string.gsub(/(^|-)(\w)/) { |match| $1 + $2.upcase }
+      string.downcase.gsub(/(^|-)(\w)/) { |match| $1 + $2.upcase }
     end
 
     def first?
       index == 0
+    end
+
+    def in?(array)
+      array.include?(string)
     end
 
     def letters

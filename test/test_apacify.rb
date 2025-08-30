@@ -151,4 +151,57 @@ class TestApacify < Minitest::Test
     assert_equal "State-Of-The-Art-System", "state-of-the-art-system".apacify
     assert_equal "Up-To-The-Minute News", "up-to-the-minute news".apacify
   end
+
+  def test_ignore_single_word
+    assert_equal "Tokyo Night (feat. Evangeline)", "tokyo night (feat. evangeline)".apacify(ignore: "feat.")
+    assert_equal "The Quick Brown fox", "the quick brown fox".apacify(ignore: "fox")
+    assert_equal "Love and Peace", "love and peace".apacify(ignore: "and")
+  end
+
+  def test_ignore_multiple_words_as_array
+    assert_equal "Tokyo Night (feat. evangeline)", "tokyo night (feat. evangeline)".apacify(ignore: ["feat.", "evangeline"])
+    assert_equal "The quick Brown fox", "the quick brown fox".apacify(ignore: ["quick", "fox"])
+    assert_equal "love and peace", "love and peace".apacify(ignore: ["love", "peace"])
+  end
+
+  def test_ignore_case_sensitive_no_match
+    assert_equal "Tokyo Night (Feat. Evangeline)", "tokyo night (FEAT. evangeline)".apacify(ignore: "feat.")
+    assert_equal "The Quick Brown Fox", "the quick brown FOX".apacify(ignore: "fox")
+  end
+
+  def test_ignore_with_punctuation
+    assert_equal "Song Title (feat. Artist)", "song title (feat. artist)".apacify(ignore: "feat.")
+    assert_equal "Chapter One: the Beginning", "chapter one: the beginning".apacify(ignore: "the")
+  end
+
+  def test_ignore_first_word
+    assert_equal "the Quick Brown Fox", "the quick brown fox".apacify(ignore: "the")
+    assert_equal "and Justice for All", "and justice for all".apacify(ignore: "and")
+  end
+
+  def test_ignore_last_word
+    assert_equal "The Quick Brown fox", "the quick brown fox".apacify(ignore: "fox")
+    assert_equal "Love and peace", "love and peace".apacify(ignore: "peace")
+  end
+
+  def test_ignore_empty_array
+    assert_equal "The Quick Brown Fox", "the quick brown fox".apacify(ignore: [])
+  end
+
+  def test_ignore_non_existent_words
+    assert_equal "The Quick Brown Fox", "the quick brown fox".apacify(ignore: "nonexistent")
+    assert_equal "The Quick Brown Fox", "the quick brown fox".apacify(ignore: ["nonexistent", "also_nonexistent"])
+  end
+
+  def test_ignore_mixed_types
+    assert_equal "Tokyo Night (feat. evangeline)", "tokyo night (feat. evangeline)".apacify(ignore: ["feat.", :evangeline])
+  end
+
+  def test_ignore_capitalized
+    assert_equal "Tokyo Night (FEAT. Evangeline)", "tokyo night (FEAT. evangeline)".apacify(ignore: ["FEAT."])
+  end
+
+  def test_wont_ignore_not_sensitive_matches
+    assert_equal "Tokyo Night (Feat. Evangeline)", "tokyo night (FEAT. evangeline)".apacify(ignore: ["feat."])
+  end
 end

@@ -2,7 +2,7 @@ module Apacify
   class Tokenizer
     include Enumerable
 
-    attr_reader :tokens
+    attr_reader :tokens, :ignore
 
     def initialize(string)
       @tokens = string
