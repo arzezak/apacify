@@ -46,7 +46,7 @@ module Apacify
     end
 
     def sentence_ending_punctuation?
-      string.match?(/[.!?:—()]+\s*/)
+      string.match?(/[.!?:—()\[\]]+\s*/)
     end
 
     def to_s
@@ -54,7 +54,7 @@ module Apacify
     end
 
     def whitespace_or_punctuation?
-      string.match?(/\s+|[.!?:—()]+\s*/)
+      string.match?(/\s+|[.!?:—()\[\]]+\s*/)
     end
 
     private

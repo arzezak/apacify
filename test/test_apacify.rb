@@ -212,4 +212,10 @@ class TestApacify < Minitest::Test
     assert_equal "Louis XIV", "louis xiv".apacify
     assert_equal "Super Bowl LIII", "super bowl liii".apacify
   end
+
+  def test_brackets
+    assert_equal "Starless (Live in Central Park) [Bonus Track]", "starless (live in central park) [bonus track]".apacify
+    assert_equal "What Did You Mean (When You Said Love) [Live in Amsterdam]", "what did you mean (when you said love) [live in amsterdam]".apacify
+    assert_equal "Hit the Target (Live in Amsterdam) [Bonus Track]", "hit the target (live in amsterdam) [bonus track]".apacify
+  end
 end

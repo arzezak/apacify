@@ -27,7 +27,7 @@ module Apacify
       return false if ignored_word?(token)
 
       token.first? ||
-        tokens.previous(token).sentence_ending_punctuation? ||
+        tokens.previous_punctuation(token)&.sentence_ending_punctuation? ||
         !token.minor_word? ||
         token.long?
     end
