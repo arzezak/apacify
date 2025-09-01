@@ -9,6 +9,10 @@ module Apacify
     File.join(__dir__, "..", "config", "minor.yml")
   ).freeze
 
+  PUNCTUATION_CHARS = '[.!?:—()\[\]]'
+  PUNCTUATION_PATTERN = /#{PUNCTUATION_CHARS}+\s*/
+  WORD_BOUNDARY_PATTERN = /(\s+|#{PUNCTUATION_CHARS}+\s*)/
+
   def self.titleize(string, ignore: [])
     Titleizer.new(string, ignore:).titleize
   end

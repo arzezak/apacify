@@ -46,7 +46,7 @@ module Apacify
     end
 
     def sentence_ending_punctuation?
-      string.match?(/[.!?:—()\[\]]+\s*/)
+      string.match?(punctuation_pattern)
     end
 
     def to_s
@@ -54,10 +54,14 @@ module Apacify
     end
 
     def whitespace_or_punctuation?
-      string.match?(/\s+|[.!?:—()\[\]]+\s*/)
+      string.match?(/\s+/) || sentence_ending_punctuation?
     end
 
     private
+
+    def punctuation_pattern
+      PUNCTUATION_PATTERN
+    end
 
     def roman_numeral?(word)
       # Only letters used in roman numerals

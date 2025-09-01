@@ -40,39 +40,6 @@ module Apacify
       nil
     end
 
-    def inside_parentheses_or_brackets?(token)
-      # Look backwards for opening punctuation
-      opening_punct = nil
-      closing_punct = nil
-
-      # Check backwards for opening punctuation
-      (token.index - 1).downto(0) do |i|
-        t = tokens[i]
-        if t.string.match?(/[(\[]/)
-          opening_punct = t.string
-          break
-        elsif t.string.match?(/[)\]]/)
-          closing_punct = t.string
-          break
-        end
-      end
-
-      # Check forwards for closing punctuation
-      (token.index + 1).upto(tokens.length - 1) do |i|
-        t = tokens[i]
-        if t.string.match?(/[)\]]/)
-          closing_punct = t.string
-          break
-        elsif t.string.match?(/[(\[]/)
-          # Found another opening before closing, so we're not inside
-          return false
-        end
-      end
-
-      # We're inside if we found opening punct before us and closing punct after us
-      opening_punct && closing_punct
-    end
-
     private
 
     def instantiate
@@ -80,7 +47,7 @@ module Apacify
     end
 
     def word_boundary_pattern
-      /(\s+|[.!?:—()\[\]]+\s*)/
+      WORD_BOUNDARY_PATTERN
     end
   end
 end
