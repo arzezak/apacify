@@ -61,7 +61,7 @@ module Apacify
     end
 
     def sentence_ending_punctuation?
-      string.match?(punctuation_pattern)
+      string.match?(PUNCTUATION_PATTERN)
     end
 
     def to_s
@@ -74,18 +74,13 @@ module Apacify
 
     private
 
-    def punctuation_pattern
-      PUNCTUATION_PATTERN
-    end
-
     def all_caps?(word)
-      word.match?(/\A[A-Z]+\z/) && word.length > 0
+      word.match?(/\A[A-Z]+\z/)
     end
 
     def roman_numeral?(word)
-      # Match valid Roman numerals (case insensitive)
-      # This pattern matches common Roman numerals from I to MMMCMXCIX (3999)
-      word.match?(/\A(?=[MDCLXVI])M{0,4}(C[MD]|D?C{0,3})?(X[CL]|L?X{0,3})?(I[XV]|V?I{0,3})?\z/i) && !word.empty?
+      # Match valid Roman numerals - simplified but accurate pattern
+      word.match?(/\A(?:M{0,4}(?:CM|CD|D?C{0,3})(?:XC|XL|L?X{0,3})(?:IX|IV|V?I{0,3}))\z/i)
     end
   end
 end
