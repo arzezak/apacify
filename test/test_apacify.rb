@@ -164,11 +164,6 @@ class TestApacify < Minitest::Test
     assert_equal "love and peace", "love and peace".apacify(ignore: ["love", "peace"])
   end
 
-  def test_ignore_case_sensitive_no_match
-    assert_equal "Tokyo Night (Feat. Evangeline)", "tokyo night (FEAT. evangeline)".apacify(ignore: "feat.")
-    assert_equal "The Quick Brown Fox", "the quick brown FOX".apacify(ignore: "fox")
-  end
-
   def test_ignore_with_punctuation
     assert_equal "Song Title (feat. Artist)", "song title (feat. artist)".apacify(ignore: "feat.")
     assert_equal "Chapter One: the Beginning", "chapter one: the beginning".apacify(ignore: "the")
@@ -202,20 +197,35 @@ class TestApacify < Minitest::Test
   end
 
   def test_wont_ignore_not_sensitive_matches
-    assert_equal "Tokyo Night (Feat. Evangeline)", "tokyo night (FEAT. evangeline)".apacify(ignore: ["feat."])
+    assert_equal "Tokyo Night (Feat. Evangeline)", "tokyo night (FeAt. evangeline)".apacify(ignore: ["feat."])
   end
 
   def test_roman_numerals
-    assert_equal "Chapter IV: The Return", "chapter iv: the return".apacify
-    assert_equal "World War II", "world war ii".apacify
-    assert_equal "Henry VIII", "henry viii".apacify
+    assert_equal "Chapter IV: The Return", "chapter IV: the return".apacify
+    assert_equal "World War II", "world war II".apacify
+    assert_equal "Henry VIII", "henry VIII".apacify
+    assert_equal "Louis XIV", "louis XIV".apacify
+    assert_equal "Super Bowl LIII", "super bowl LIII".apacify
+  end
+
+  def test_lowercase_roman_numerals
     assert_equal "Louis XIV", "louis xiv".apacify
+    assert_equal "Henry VIII", "henry viii".apacify
+    assert_equal "Chapter IV", "chapter iv".apacify
+    assert_equal "World War II", "world war ii".apacify
     assert_equal "Super Bowl LIII", "super bowl liii".apacify
+    assert_equal "Pope John XXIII", "pope john xxiii".apacify
+    assert_equal "Article VII", "article vii".apacify
+    assert_equal "Amendment XIV", "amendment xiv".apacify
   end
 
   def test_brackets
     assert_equal "Starless (Live in Central Park) [Bonus Track]", "starless (live in central park) [bonus track]".apacify
     assert_equal "What Did You Mean (When You Said Love) [Live in Amsterdam]", "what did you mean (when you said love) [live in amsterdam]".apacify
     assert_equal "Hit the Target (Live in Amsterdam) [Bonus Track]", "hit the target (live in amsterdam) [bonus track]".apacify
+  end
+
+  def test_all_caps_words
+    assert_equal "VROOOM VROOOM", "VROOOM VROOOM".apacify
   end
 end
