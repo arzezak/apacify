@@ -2,13 +2,13 @@ module Apacify
   class Tokenizer
     include Enumerable
 
-    attr_reader :tokens, :ignore
+    attr_reader :tokens
 
     def initialize(string)
       @tokens = string
         .split(word_boundary_pattern)
         .map
-        .with_index(&instantiate)
+        .with_index { |token, index| Token.new(token, index) }
     end
 
     def [](index)
@@ -19,14 +19,6 @@ module Apacify
       return enum_for(:each) unless block_given?
 
       tokens.each(&block)
-    end
-
-    def previous(token)
-      index = token.index - 1
-      while index >= 0 && tokens[index].whitespace_or_punctuation?
-        index -= 1
-      end
-      tokens[index] if index >= 0
     end
 
     def previous_punctuation(token)
@@ -41,10 +33,6 @@ module Apacify
     end
 
     private
-
-    def instantiate
-      ->(token, index) { Token.new(token, index) }
-    end
 
     def word_boundary_pattern
       WORD_BOUNDARY_PATTERN

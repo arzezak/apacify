@@ -1,12 +1,6 @@
-require "forwardable"
-
 module Apacify
   class Token
-    extend Forwardable
-
     attr_reader :string, :index
-
-    def_delegator :string, :downcase
 
     def initialize(string, index)
       @string = string
@@ -14,30 +8,25 @@ module Apacify
     end
 
     def capitalize_word_parts
-      result = ""
-      match_start = 0
+      parts = string.split("-", -1)
+      parts.map! do |part|
+        word = part[/\w+/]
+        next part unless word
 
-      string.scan(/(^|-)(\w+)/) do |prefix, word|
-        match_index = string.index(prefix + word, match_start)
-        original_word = string[match_index + prefix.length, word.length]
+        prefix = part[0, part.index(word)]
+        suffix = part[(prefix.length + word.length)..]
 
-        result += if all_caps?(original_word)
-          prefix + original_word
+        capitalized = if all_caps?(word)
+          word
         elsif roman_numeral?(word)
-          prefix + word.upcase
+          word.upcase
         else
-          prefix + word.downcase.capitalize
+          word.downcase.capitalize
         end
 
-        match_start = match_index + prefix.length + word.length
+        "#{prefix}#{capitalized}#{suffix}"
       end
-
-      # Handle any remaining characters
-      if match_start < string.length
-        result += string[match_start..]
-      end
-
-      result
+      parts.join("-")
     end
 
     def first?
@@ -69,7 +58,7 @@ module Apacify
     end
 
     def whitespace_or_punctuation?
-      string.match?(/\s+/) || sentence_ending_punctuation?
+      string.match?(/\A(?:\s|#{PUNCTUATION_CHARS})+\s*\z/o)
     end
 
     private
@@ -79,7 +68,6 @@ module Apacify
     end
 
     def roman_numeral?(word)
-      # Match valid Roman numerals - simplified but accurate pattern
       word.match?(/\A(?:M{0,4}(?:CM|CD|D?C{0,3})(?:XC|XL|L?X{0,3})(?:IX|IV|V?I{0,3}))\z/i)
     end
   end

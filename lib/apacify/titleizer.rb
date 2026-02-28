@@ -1,5 +1,3 @@
-require "yaml"
-
 module Apacify
   class Titleizer
     attr_reader :tokens, :ignore
@@ -39,12 +37,8 @@ module Apacify
       token_string = token.string.strip
 
       ignore.any? do |ignore_word|
-        # Case-sensitive direct match with full token string
-        if token_string == ignore_word
-          return true
-        end
+        return true if token_string == ignore_word
 
-        # Check if ignore_word contains punctuation and token matches the word part (case-sensitive)
         if ignore_word.match?(/[.!?:—()]/)
           word_part = ignore_word.gsub(/[.!?:—()]+/, "")
           if token_string == word_part
