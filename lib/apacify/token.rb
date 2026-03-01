@@ -1,16 +1,25 @@
 module Apacify
   class Token
     attr_reader :string, :index
-    attr_writer :after_punctuation
+    attr_writer :after_punctuation, :ignored
 
     def initialize(string, index)
       @string = string
       @index = index
       @after_punctuation = false
+      @ignored = false
     end
 
     def after_punctuation?
       @after_punctuation
+    end
+
+    def ignored?
+      @ignored
+    end
+
+    def titleize
+      should_capitalize? ? titleize_word : string
     end
 
     def first?
@@ -37,6 +46,18 @@ module Apacify
       string
     end
 
+    def whitespace_or_punctuation?
+      string.match?(/\A(?:\s|#{PUNCTUATION_CHARS})+\s*\z/o)
+    end
+
+    private
+
+    def should_capitalize?
+      return false if ignored?
+
+      first? || after_punctuation? || !minor_word? || long?
+    end
+
     def titleize_word
       hyphenated? ? capitalize_hyphenated : capitalize_word
     end
@@ -51,12 +72,6 @@ module Apacify
 
       "#{prefix}#{capitalize_part(word, false)}#{suffix}"
     end
-
-    def whitespace_or_punctuation?
-      string.match?(/\A(?:\s|#{PUNCTUATION_CHARS})+\s*\z/o)
-    end
-
-    private
 
     def capitalize_hyphenated
       parts = string.split("-", -1)

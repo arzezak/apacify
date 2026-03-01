@@ -5,28 +5,24 @@ module Apacify
     def initialize(string, ignore: [])
       @tokens = Tokenizer.new(string)
       @ignore = wrap(ignore).reject(&:empty?)
+      mark_ignored_tokens
     end
 
     def titleize
-      tokens.map do |token|
-        if should_capitalize?(token)
-          token.titleize_word
-        else
-          token
-        end
-      end.join.strip
+      tokens.map(&:titleize).join.strip
     end
 
     private
 
-    def should_capitalize?(token)
-      return false if ignored_word?(token)
+    def mark_ignored_tokens
+      return if ignore.empty?
 
-      token.first? || token.after_punctuation? || !token.minor_word? || token.long?
+      tokens.each do |token|
+        token.ignored = ignored_word?(token)
+      end
     end
 
     def ignored_word?(token)
-      return false if ignore.empty?
       return false if token.whitespace_or_punctuation?
 
       token_string = token.string.strip
