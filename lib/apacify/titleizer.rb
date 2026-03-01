@@ -31,18 +31,11 @@ module Apacify
 
       token_string = token.string.strip
 
-      ignore.any? do |ignore_word|
-        return true if token_string == ignore_word
+      ignore.any? { |w| token_string == w || punctuation_word_match?(token_string, w) }
+    end
 
-        if ignore_word.match?(/[.!?:—()]/)
-          word_part = ignore_word.gsub(/[.!?:—()]+/, "")
-          if token_string == word_part
-            return true
-          end
-        end
-
-        false
-      end
+    def punctuation_word_match?(token_string, ignore_word)
+      ignore_word.match?(/[.!?:—()]/) && token_string == ignore_word.gsub(/[.!?:—()]+/, "")
     end
 
     def wrap(object)
