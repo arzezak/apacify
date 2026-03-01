@@ -131,6 +131,13 @@ class TestApacify < Minitest::Test
     assert_equal "Under-the-table Payment", "under-the-table payment".apacify
   end
 
+  def test_hyphenated_prefix_proper_nouns
+    assert_equal "Pre-Christian Era", "pre-Christian era".apacify
+    assert_equal "Trans-American Highway", "trans-American highway".apacify
+    assert_equal "Anti-Semitic Rhetoric", "anti-Semitic rhetoric".apacify
+    assert_equal "Pro-European Movement", "pro-European movement".apacify
+  end
+
   def test_hyphenated_words_first_position
     assert_equal "Well-Known Author", "well-known author".apacify
     assert_equal "Long-Term Investment", "long-term investment".apacify

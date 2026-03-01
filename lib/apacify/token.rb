@@ -25,7 +25,7 @@ module Apacify
         elsif roman_numeral?(word)
           word.upcase
         elsif after_prefix
-          word.downcase
+          capitalized?(word) ? word : word.downcase
         else
           word.downcase.capitalize
         end
@@ -73,6 +73,10 @@ module Apacify
 
     def all_caps?(word)
       word.match?(/\A[A-Z]+\z/)
+    end
+
+    def capitalized?(word)
+      word[0] == word[0].upcase
     end
 
     def roman_numeral?(word)
