@@ -27,7 +27,7 @@ module Apacify
 
       token_string = token.string.strip
 
-      ignore.any? { |w| token_string == w || punctuation_word_match?(token_string, w) }
+      ignore.any? { token_string == it || punctuation_word_match?(token_string, it) }
     end
 
     def punctuation_word_match?(token_string, ignore_word)

@@ -75,7 +75,7 @@ module Apacify
 
     def capitalize_hyphenated
       parts = string.split("-", -1)
-      first_prefix = parts.index { |p| PREFIXES.include?(p[/\w+/]&.downcase) }
+      first_prefix = parts.index { PREFIXES.include?(it[/\w+/]&.downcase) }
 
       parts.each_with_index.map do |part, i|
         prefix, word, suffix = part.match(/(\W*)(\w+)(.*)/)&.captures

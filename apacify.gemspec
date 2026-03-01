@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.description = "Apacify converts strings to proper title case following APA (American Psychological Association) style guidelines."
   spec.homepage = "https://github.com/arzezak/apacify"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 3.1.0"
+  spec.required_ruby_version = ">= 3.4.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
