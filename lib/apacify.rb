@@ -10,6 +10,13 @@ module Apacify
     so the to up via with yet
   ].freeze
 
+  PREFIXES = %w[
+    anti co counter ex extra infra inter intra
+    macro mega meta micro mid mini multi neo
+    non over post pre pro proto pseudo quasi
+    re semi sub super supra trans ultra un under
+  ].to_set.freeze
+
   PUNCTUATION_CHARS = '[.!?:—()\[\]]'
   PUNCTUATION_PATTERN = /#{PUNCTUATION_CHARS}+\s*/
   WORD_BOUNDARY_PATTERN = /(\s+|#{PUNCTUATION_CHARS}+\s*)/

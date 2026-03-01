@@ -18,9 +18,14 @@ class TestApacify < Minitest::Test
     assert_equal "A Simple Test", "a simple test".apacify
   end
 
-  def test_first_and_last_words_capitalized
+  def test_first_word_capitalized
     assert_equal "The End of the World", "the end of the world".apacify
     assert_equal "A Study of Literature", "a study of literature".apacify
+  end
+
+  def test_last_minor_word_stays_lowercase
+    assert_equal "Turn It up", "turn it up".apacify
+    assert_equal "Something to Look at", "something to look at".apacify
   end
 
   def test_minor_words_lowercase_in_middle
@@ -102,22 +107,22 @@ class TestApacify < Minitest::Test
     assert_equal "Self-Esteem", "self-esteem".apacify
   end
 
-  def skip_test_hyphenated_prefixes
+  def test_hyphenated_prefixes
     assert_equal "Anti-war Movement", "anti-war movement".apacify
     assert_equal "Co-author of the Book", "co-author of the book".apacify
     assert_equal "Ex-president Obama", "ex-president obama".apacify
     assert_equal "Non-fiction Literature", "non-fiction literature".apacify
     assert_equal "Pre-war Economy", "pre-war economy".apacify
     assert_equal "Pro-life Activists", "pro-life activists".apacify
-    assert_equal "Re-Examine the Evidence", "re-examine the evidence".apacify
-    assert_equal "Sub-Committee Meeting", "sub-committee meeting".apacify
-    assert_equal "Super-Human Strength", "super-human strength".apacify
-    assert_equal "Trans-Atlantic Flight", "trans-atlantic flight".apacify
-    assert_equal "Ultra-Modern Design", "ultra-modern design".apacify
+    assert_equal "Re-examine the Evidence", "re-examine the evidence".apacify
+    assert_equal "Sub-committee Meeting", "sub-committee meeting".apacify
+    assert_equal "Super-human Strength", "super-human strength".apacify
+    assert_equal "Trans-atlantic Flight", "trans-atlantic flight".apacify
+    assert_equal "Ultra-modern Design", "ultra-modern design".apacify
   end
 
-  def skip_test_mid_and_semi_prefixes
-    assert_equal "Mid-Century Modern", "mid-century modern".apacify
+  def test_mid_and_semi_prefixes
+    assert_equal "Mid-century Modern", "mid-century modern".apacify
     assert_equal "Semi-automatic Weapon", "semi-automatic weapon".apacify
     assert_equal "Multi-cultural Society", "multi-cultural society".apacify
     assert_equal "Inter-personal Skills", "inter-personal skills".apacify

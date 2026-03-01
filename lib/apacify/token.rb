@@ -9,9 +9,13 @@ module Apacify
 
     def capitalize_word_parts
       parts = string.split("-", -1)
+      after_prefix = false
       parts.map! do |part|
         word = part[/\w+/]
-        next part unless word
+        unless word
+          after_prefix = false
+          next part
+        end
 
         prefix = part[0, part.index(word)]
         suffix = part[(prefix.length + word.length)..]
@@ -20,9 +24,13 @@ module Apacify
           word
         elsif roman_numeral?(word)
           word.upcase
+        elsif after_prefix
+          word.downcase
         else
           word.downcase.capitalize
         end
+
+        after_prefix ||= PREFIXES.include?(word.downcase)
 
         "#{prefix}#{capitalized}#{suffix}"
       end
