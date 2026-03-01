@@ -10,7 +10,7 @@ module Apacify
     def titleize
       tokens.map do |token|
         if should_capitalize?(token)
-          token.capitalize_hyphenated
+          token.titleize_word
         else
           token
         end

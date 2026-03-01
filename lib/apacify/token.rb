@@ -9,19 +9,6 @@ module Apacify
       @after_punctuation = false
     end
 
-    def capitalize_hyphenated
-      parts = string.split("-", -1)
-      first_prefix = parts.index { |p| PREFIXES.include?(p[/\w+/]&.downcase) }
-
-      parts.each_with_index.map do |part, i|
-        prefix, word, suffix = part.match(/(\W*)(\w+)(.*)/)&.captures
-        next part unless word
-
-        capitalized = capitalize_part(word, first_prefix && i > first_prefix)
-        "#{prefix}#{capitalized}#{suffix}"
-      end.join("-")
-    end
-
     def after_punctuation?
       @after_punctuation
     end
@@ -50,6 +37,14 @@ module Apacify
       string
     end
 
+    def titleize_word
+      hyphenated? ? capitalize_hyphenated : capitalize_word
+    end
+
+    def hyphenated?
+      string.include?("-")
+    end
+
     def capitalize_word
       prefix, word, suffix = string.match(/(\W*)(\w+)(.*)/)&.captures
       return string unless word
@@ -62,6 +57,19 @@ module Apacify
     end
 
     private
+
+    def capitalize_hyphenated
+      parts = string.split("-", -1)
+      first_prefix = parts.index { |p| PREFIXES.include?(p[/\w+/]&.downcase) }
+
+      parts.each_with_index.map do |part, i|
+        prefix, word, suffix = part.match(/(\W*)(\w+)(.*)/)&.captures
+        next part unless word
+
+        capitalized = capitalize_part(word, first_prefix && i > first_prefix)
+        "#{prefix}#{capitalized}#{suffix}"
+      end.join("-")
+    end
 
     def all_caps?(word)
       word.match?(/\A[A-Z]+\z/)
