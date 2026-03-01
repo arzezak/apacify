@@ -50,6 +50,13 @@ module Apacify
       string
     end
 
+    def capitalize_word
+      prefix, word, suffix = string.match(/(\W*)(\w+)(.*)/)&.captures
+      return string unless word
+
+      "#{prefix}#{capitalize_part(word, false)}#{suffix}"
+    end
+
     def whitespace_or_punctuation?
       string.match?(/\A(?:\s|#{PUNCTUATION_CHARS})+\s*\z/o)
     end
