@@ -1,3 +1,8 @@
+## [0.4.0] - 2026-03-01
+
+- Lowercase second element after hyphenated prefixes per APA 7th ed (e.g., Mid-century, Pre-war)
+- Preserve proper nouns after prefixes when input is already capitalized (e.g., Pre-Christian)
+
 ## [0.3.0] - 2025-08-30
 
 - Support Roman numerals
