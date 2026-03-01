@@ -1,48 +1,33 @@
 module Apacify
   class Token
     attr_reader :string, :index
+    attr_writer :after_punctuation
 
     def initialize(string, index)
       @string = string
       @index = index
+      @after_punctuation = false
     end
 
-    def capitalize_word_parts
+    def capitalize_hyphenated
       parts = string.split("-", -1)
-      after_prefix = false
-      parts.map! do |part|
-        word = part[/\w+/]
-        unless word
-          after_prefix = false
-          next part
-        end
+      first_prefix = parts.index { |p| PREFIXES.include?(p[/\w+/]&.downcase) }
 
-        prefix = part[0, part.index(word)]
-        suffix = part[(prefix.length + word.length)..]
+      parts.each_with_index.map do |part, i|
+        prefix, word, suffix = part.match(/(\W*)(\w+)(.*)/)&.captures
+        next part unless word
 
-        capitalized = if all_caps?(word)
-          word
-        elsif roman_numeral?(word)
-          word.upcase
-        elsif after_prefix
-          capitalized?(word) ? word : word.downcase
-        else
-          word.downcase.capitalize
-        end
-
-        after_prefix ||= PREFIXES.include?(word.downcase)
-
+        capitalized = capitalize_part(word, first_prefix && i > first_prefix)
         "#{prefix}#{capitalized}#{suffix}"
-      end
-      parts.join("-")
+      end.join("-")
+    end
+
+    def after_punctuation?
+      @after_punctuation
     end
 
     def first?
       index == 0
-    end
-
-    def in?(array)
-      array.include?(string)
     end
 
     def letters
@@ -73,6 +58,18 @@ module Apacify
 
     def all_caps?(word)
       word.match?(/\A[A-Z]+\z/)
+    end
+
+    def capitalize_part(word, after_prefix)
+      if all_caps?(word)
+        word
+      elsif roman_numeral?(word)
+        word.upcase
+      elsif after_prefix
+        capitalized?(word) ? word : word.downcase
+      else
+        word.downcase.capitalize
+      end
     end
 
     def capitalized?(word)

@@ -9,10 +9,8 @@ module Apacify
 
     def titleize
       tokens.map do |token|
-        if token.in?(ignore)
-          token
-        elsif should_capitalize?(token)
-          token.capitalize_word_parts
+        if should_capitalize?(token)
+          token.capitalize_hyphenated
         else
           token
         end
@@ -24,10 +22,7 @@ module Apacify
     def should_capitalize?(token)
       return false if ignored_word?(token)
 
-      token.first? ||
-        tokens.previous_punctuation(token)&.sentence_ending_punctuation? ||
-        !token.minor_word? ||
-        token.long?
+      token.first? || token.after_punctuation? || !token.minor_word? || token.long?
     end
 
     def ignored_word?(token)
