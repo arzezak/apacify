@@ -12,8 +12,9 @@ Apacify is a Ruby gem that converts strings to APA-style title case. It extends 
 rake              # Run tests + linter (default)
 rake test         # Tests only (minitest)
 rake standard     # Lint only (Standard/RuboCop)
-ruby -Ilib test/test_apacify.rb                          # Run test file directly
-ruby -Ilib test/test_apacify.rb -n test_method_name      # Single test
+ruby -Ilib:test test/test_apacify.rb                     # Run test file directly
+ruby -Ilib:test test/test_apacify.rb -n test_method_name # Single test
+bundle exec swarf lib/                                   # Rank methods by complexity vs coverage
 bin/console       # IRB with gem loaded
 ```
 

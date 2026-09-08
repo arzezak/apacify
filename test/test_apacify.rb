@@ -165,6 +165,11 @@ class TestApacify < Minitest::Test
     assert_equal "Up-To-The-Minute News", "up-to-the-minute news".apacify
   end
 
+  def test_hyphens_without_letters
+    assert_equal "Twenty-", "twenty-".apacify
+    assert_equal "Rock -- Roll", "rock -- roll".apacify
+  end
+
   def test_ignore_single_word
     assert_equal "Tokyo Night (feat. Evangeline)", "tokyo night (feat. evangeline)".apacify(ignore: "feat.")
     assert_equal "The Quick Brown fox", "the quick brown fox".apacify(ignore: "fox")
