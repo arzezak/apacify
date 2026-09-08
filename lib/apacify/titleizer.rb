@@ -1,48 +1,38 @@
 module Apacify
   class Titleizer
-    attr_reader :tokens, :ignore
+    PUNCTUATION = /[.!?:—()\[\]]/
+    SEPARATOR = /((?:\s|#{PUNCTUATION})+)/
 
     def initialize(string, ignore: [])
-      @tokens = Tokenizer.new(string)
-      @ignore = wrap(ignore).reject(&:empty?)
-      mark_ignored_tokens
+      @string = string
+      @ignore = Array(ignore).map { it.to_s.gsub(PUNCTUATION, "") }
     end
 
     def titleize
-      tokens.map(&:titleize).join.strip
+      @starts_clause = true
+      @string.strip.split(SEPARATOR).map { titleize_token(it) }.join
     end
 
     private
 
-    def mark_ignored_tokens
-      return if ignore.empty?
-
-      tokens.each do |token|
-        token.ignored = ignored_word?(token)
-      end
-    end
-
-    def ignored_word?(token)
-      return false if token.whitespace_or_punctuation?
-
-      token_string = token.string.strip
-
-      ignore.any? { token_string == it || punctuation_word_match?(token_string, it) }
-    end
-
-    def punctuation_word_match?(token_string, ignore_word)
-      ignore_word.match?(/[.!?:—()]/) && token_string == ignore_word.gsub(/[.!?:—()]+/, "")
-    end
-
-    def wrap(object)
-      case object
-      when nil
-        []
-      when Array
-        object.map(&:to_s)
+    def titleize_token(token)
+      if separator?(token)
+        @starts_clause ||= token.match?(PUNCTUATION)
+        token
       else
-        [object]
+        titleize_word(token).tap { @starts_clause = false }
       end
+    end
+
+    def separator?(token)
+      token.strip.empty? || token.match?(PUNCTUATION)
+    end
+
+    def titleize_word(token)
+      return token if @ignore.include?(token)
+
+      word = Word.new(token)
+      (@starts_clause || !word.minor?) ? word.capitalize : token
     end
   end
 end

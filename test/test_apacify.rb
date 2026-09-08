@@ -70,6 +70,7 @@ class TestApacify < Minitest::Test
     assert_equal "", "".apacify
     assert_equal "", "   ".apacify
     assert_equal "Test", "  test  ".apacify
+    assert_equal "The End", "  the end".apacify
   end
 
   def test_contractions_and_apostrophes

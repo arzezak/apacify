@@ -1,3 +1,8 @@
+## [Unreleased]
+
+- Fix first word not being capitalized when the input has leading whitespace
+- Strip brackets as well as other punctuation when matching `ignore:` words
+
 ## [0.4.0] - 2026-03-01
 
 - Lowercase second element after hyphenated prefixes per APA 7th ed (e.g., Mid-century, Pre-war)

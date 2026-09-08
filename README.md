@@ -1,6 +1,6 @@
 # Apacify
 
-A Ruby gem that converts strings to proper title case following APA (American Psychological Association) style guidelines. Apacify capitalizes strings while keeping minor words (articles, prepositions, conjunctions) lowercase, except when they appear at the beginning or end of the title, or after sentence-ending punctuation.
+A Ruby gem that converts strings to proper title case following APA (American Psychological Association) style guidelines. Apacify capitalizes strings while keeping minor words (articles, prepositions, conjunctions) lowercase, except when they begin the title or follow sentence-ending punctuation.
 
 ## APA's Title Case Guide
 
@@ -73,7 +73,7 @@ You can specify words to ignore during title case conversion. Ignored words will
 ## Features
 
 - Follows APA style title case rules
-- Capitalizes first and last words regardless of length
+- Capitalizes the first word regardless of length
 - Keeps minor words lowercase in the middle
 - Capitalizes words after sentence-ending punctuation
 - Handles hyphenated words correctly

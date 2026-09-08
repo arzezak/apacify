@@ -19,18 +19,17 @@ bin/console       # IRB with gem loaded
 
 ## Architecture
 
-Entry point: `lib/apacify.rb` — loads `config/minor.yml`, defines `Apacify.titleize`, patches `String#apacify`.
+Entry point: `lib/apacify.rb` — defines `Apacify.titleize`, patches `String#apacify`.
 
-Pipeline: **input string → Tokenizer → Token[] → Titleizer → output string**
+Pipeline: **input string → Titleizer splits on separators → Word capitalizes each word → output string**
 
-- `Tokenizer` splits on word boundaries (spaces + punctuation), implements `Enumerable`
-- `Token` represents a single unit; knows if it's a minor word, punctuation, first/last, Roman numeral, hyphenated
-- `Titleizer` walks tokens and applies capitalization rules via `should_capitalize?`
+- `Titleizer` strips the input, splits it into words and separators (whitespace + `PUNCTUATION`), tracks whether the next word starts a clause, and applies the `ignore:` list
+- `Word` owns the word-level rules: `MINOR`, hyphenated `PREFIXES`, Roman numerals, all-caps preservation
 
 ## APA Title Case Rules
 
 1. Always capitalize first word and words after sentence-ending punctuation (`:`, `.`, `!`, `?`, `—`)
 2. Capitalize all major words (4+ letters always qualify)
-3. Minor words (≤3 letters, listed in `config/minor.yml`) stay lowercase unless rule 1 applies
-4. Hyphenated parts each get capitalized independently
-5. `ignore:` parameter preserves original case (case-sensitive matching)
+3. Minor words (≤3 letters, listed in `Word::MINOR`) stay lowercase unless rule 1 applies
+4. Hyphenated parts each get capitalized independently; parts after a known prefix stay lowercase unless already capitalized (Mid-century, Pre-Christian)
+5. `ignore:` parameter preserves original case (case-sensitive matching, punctuation in the ignore word is stripped)
